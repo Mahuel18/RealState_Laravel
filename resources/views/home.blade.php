@@ -12,7 +12,7 @@
                 <span class="d-inline-block bg-success text-white px-3 mb-3 property-offer-type rounded">{{ $prop->type }}</span>
                 <h1 class="mb-2">{{ $prop->title }}</h1>
                 <p class="mb-5"><strong class="h2 text-success font-weight-bold">{{ $prop->price }}</strong></p>
-                <p><a href="#" class="btn btn-white btn-outline-white py-3 px-5 rounded-0 btn-2">See Details</a></p>
+                <p><a href="{{ route('single.prop', $prop->id) }}" class="btn btn-white btn-outline-white py-3 px-5 rounded-0 btn-2">See Details</a></p>
             </div>
           </div>
       </div>
@@ -107,7 +107,7 @@
           @foreach ($props as $prop)
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="property-entry h-100">
-                    <a href="property-details.html" class="property-thumbnail">
+                    <a href="{{ route('single.prop', $prop->id) }}" class="property-thumbnail">
                         <div class="offer-type-wrap">
                             <span class="offer-type bg-success">{{ $prop->type }}</span>
                         </div>
@@ -115,7 +115,7 @@
                     </a>
                     <div class="p-4 property-body">
                         <a href="#" class="property-favorite"><span class="icon-heart-o"></span></a>
-                        <h2 class="property-title"><a href="property-details.html">{{ $prop->title }}</a></h2>
+                        <h2 class="property-title"><a href="{{ route('single.prop', $prop->id) }}">{{ $prop->title }}</a></h2>
                         <span class="property-location d-block mb-3"><span class="property-icon icon-room"></span> {{ $prop->location }}</span>
                         <strong class="property-price text-primary mb-3 d-block text-success">${{ $prop->price }}</strong>
                         <ul class="property-specs-wrap mb-3 mb-lg-0">
