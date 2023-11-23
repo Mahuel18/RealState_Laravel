@@ -14,6 +14,21 @@
         </div>
     </div>
 </div>
+<div class="container">
+  @if (\Session::has('success'))
+  <div class="alert alert-success">
+    <p>{!! \Session::get('success') !!}</p>
+  </div>
+  @endif
+</div>
+<div class="container">
+  @if (\Session::has('save'))
+  <div class="alert alert-success">
+    <p>{!! \Session::get('save') !!}</p>
+  </div>
+  @endif
+</div>
+
 
 <div class="site-section site-section-sm">
       <div class="container">
@@ -87,33 +102,85 @@
             <div class="bg-white widget border rounded">
 
               <h3 class="h4 text-black widget-title mb-3">Contact Agent</h3>
+              @if($validateFormCount > 0)
+              <p class="alert alert-success"> You already sent a request to this property </p>
+
+              @else
               <form method="POST" action="{{ route('insert.request', $singleProp->id)}}" class="form-contact-agent">
-              @csrf
-              <div class="form-group">
-                <input name="prop_id" value="{{ $singleProp->id }}" type="hidden" id="name" class="form-control">
-              </div>
-              <div class="form-group">
-                <input name="agent_name" value="{{ $singleProp->agent_name }}" type="hidden" id="name" class="form-control">
-              </div>
+                @csrf
+                <div class="form-group">
+                  <input name="prop_id" value="{{ $singleProp->id }}" type="hidden" id="name" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input name="agent_name" value="{{ $singleProp->agent_name }}" type="hidden" id="name" class="form-control">
+                </div>
           
 
                 <div class="form-group">
                   <label for="name">Name</label>
                   <input type="text" name="name" id="name" class="form-control">
                 </div>
+                @error('name')
+                <span class="text-danger" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" name="email" id="email" class="form-control">
                 </div>
+                @error('email')
+                <span class="text-danger" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 <div class="form-group">
                   <label for="phone">Phone</label>
                   <input type="text" name="phone" id="phone" class="form-control">
                 </div>
+                @error('phone')
+                <span class="text-danger" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
                 <div class="form-group">
                   <input type="submit" name="submit" id="phone" class="btn btn-primary" value="Send Request">
                 </div>
               </form>
+              @endif 
             </div>
+
+            <div class="bg-white widget border rounded">
+
+        <h3 class="h4 text-black widget-title mb-3">Save This Property</h3>
+           @if($validateSavedPropsCount > 0)
+          <p class="alert alert-success"> This property is already saved </p>
+
+          @else
+          <form method="POST" action="{{ route('save.prop', $singleProp->id)}}" class="form-contact-agent">
+            @csrf
+            <div class="form-group">
+              <input name="prop_id" value="{{ $singleProp->id }}" type="hidden" id="name" class="form-control">
+            </div>
+            <div class="form-group">
+              <input name="title" value="{{ $singleProp->title }}" type="hidden" id="name" class="form-control">
+            </div>
+            <div class="form-group">
+              <input value="{{ $singleProp->image }}" type="hidden" name="image" id="name" class="form-control">
+            </div>
+            <div class="form-group">
+              <input value="location" type="hidden" value="{{ $singleProp->location }}" name="location" id="email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input value="price" type="hidden" value="{{ $singleProp->price }}" name="price" id="phone" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="submit" name="submit" id="phone" class="btn btn-primary" value="Save Property">
+            </div>
+          </form>
+          @endif
+
+          </div>
 
             <div class="bg-white widget border rounded">
               <h3 class="h4 text-black widget-title mb-3 ml-0">Share</h3>
@@ -153,7 +220,6 @@
                   <img src="{{asset('assets/images/'.$relatedProp->image)}}" alt="Image" class="img-fluid">
                 </a>
                 <div class="p-4 property-body">
-                  <a href="#" class="property-favorite"><span class="icon-heart-o"></span></a>
                   <h2 class="property-title"><a href="{{ route('single.prop', $relatedProp->id) }}">{{ $relatedProp->title }}</a></h2>
                   <span class="property-location d-block mb-3"><span class="property-icon icon-room"></span> {{ $relatedProp->location }}</span>
                   <strong class="property-price text-primary mb-3 d-block text-success">${{ $relatedProp->price }}</strong>
